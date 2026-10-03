@@ -21,13 +21,12 @@
 
 建好（或选中）自己的工作文件夹，在里面启动 ThinCoder，把下面这段话粘贴给 AI，权限弹窗点批准，十几秒装完：
 
-    请把 https://github.com/cnzhihao/ThinCoder101-harness 这个仓库完整安装到当前目录，
-    作为我的工作司令部：
-    ① 把仓库里的 AGENTS.md、README.md、.gitignore 复制到当前目录（已存在的同名文件先征求我的意见）；
-    ② 把 .thincoder/skills/ 下的技能合并进当前目录的 .thincoder/skills/；
-    ③ 记住 VERSION 文件的内容作为当前版本记录；
+    请把 https://github.com/cnzhihao/ThinCoder101-harness 这个仓库安装到当前目录，作为我的工作司令部。注意：是把仓库里的内容装进当前目录，不是把仓库文件夹复制进来——安装完成后当前目录不能出现 ThinCoder101-harness 子文件夹，也不要留下任何 .git。建议做法：把仓库临时克隆（或下载解压）到系统临时目录，然后：
+    ① 把临时目录里的 AGENTS.md、README.md、.gitignore 复制到当前目录（已存在的同名文件先征求我的意见）；
+    ② 把临时目录 .thincoder/skills/ 下的三个技能（grilling、project-init、grill-me）合并进当前目录的 .thincoder/skills/；
+    ③ 记住临时目录里 VERSION 文件的内容作为当前版本记录；
     ④ 装完后执行 git init 和首次提交（提交信息：司令部建档）；
-    ⑤ 运行 /skills 确认 grill-me、grilling、project-init 三个技能已就位，
+    ⑤ 删除临时目录，运行 /skills 确认三个技能已就位，
     然后向我汇报安装结果和开工自检情况。
 
 装完**重启 ThinCoder**（退出再输入 thincoder），新守则生效——之后的一切（环境自检、技能升级、需求访谈提议、子项目初始化）都由 AGENTS.md 的守则自动驱动，你只管聊天。
