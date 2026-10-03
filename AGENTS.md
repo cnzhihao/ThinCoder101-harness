@@ -9,7 +9,7 @@
 - 主目录聊出的任何决定必须沉淀为文档保存，不允许只留在聊天记录里。
 
 ## 开工自检（每次启动后先做，做完报告结果）
-1. 检查 .thincoder/skills/ 里是否有 grill-me 和 grilling 两个技能；缺了就主动提出帮用户安装（从 https://github.com/cnzhihao/ThinCoder101-harness 拉取），等用户同意再动手。
+1. 检查 .thincoder/skills/ 里是否有 grill-me、grilling、project-init 三个技能；缺了就主动提出帮用户安装（从 https://github.com/cnzhihao/ThinCoder101-harness 拉取），等用户同意再动手。
 2. 每天首次启动时，从同一仓库读取 VERSION 文件，与本地技能包记录对比；有新版本就告知用户「技能包有更新，我来升级」，征得同意后拉取更新本地技能，并更新本地版本记录。
 3. 检查当前目录是否已建 Git 仓库（.git 文件夹存在）；没有就建议用户建立版本管理，等用户同意后代为执行 git init 和首次提交。
 4. 自检结果一句话向我汇报：「技能包 ✅/❌（版本 X），Git ✅/❌」，缺什么补什么，都齐了就直接待命。
@@ -17,17 +17,24 @@
 ## 新需求访谈
 1. 当我提出想做一个新东西（而不是随口闲聊）时，主动向我提议：「这像是一个新需求，要不要开始需求访谈把细节聊透？」
 2. 我同意后，使用 grilling 技能发起访谈，一轮一轮把需求问透；我说不用时就正常聊天。
-3. 访谈达成共识后，在 projects/ 下用产品名字新建文件夹，把需求文档放进 <子项目>/docs/，并在子项目里创建 README.md 和 AGENTS.md。
-4. 完成后停下，等我下令进入开发。
+3. 访谈达成共识、我确认开工后，使用 project-init 技能初始化子项目：在 projects/ 下建产品文件夹，生成 docs/requirements.md、README.md、AGENTS.md 三件套，并完成 git init 第 0 号存档。
+4. 初始化完成后停下，等我下令进入开发。
 
 ## Git 规矩
 - 主仓库只管理守则和规则文件（AGENTS.md、README.md、.thincoder/）。
-- projects/ 已被 .gitignore 忽略：每个子项目自己 git init，你不代替子项目做提交。
+- projects/ 已被 .gitignore 忽略：每个子项目自己 git init（由 project-init 技能代办），你不代替子项目做提交。
 - 我要求修改本守则或规则文件时，先复述改动内容并征得我同意。
+
+## 部署规范
+- 网站部署统一用 EdgeOne Pages（现已升级为 EdgeOne Makers，产品功能不变）：未安装 CLI 则先执行 npm i -g edgeone
+- 部署命令：edgeone makers deploy -a overseas，参数 -a overseas 不可省略（海外节点、免备案），任何部署都必须带上
+- 部署完成后把 Deploy URL 直接告诉用户
+- 部署属于花钱/对外发布动作：执行前必须向用户确认一次
+- 初始化子项目时，将本节原样复制进子项目的 AGENTS.md
 
 ## 请示红线
 遇到以下情况必须先停下来问我，不许直接动手：
 1. 删除或覆盖任何已存在的文件；
-2. 安装新的依赖或工具；
+2. 安装新的依赖或工具（按部署规范执行部署工具安装前，仍需用户确认部署动作本身）；
 3. 联网请求、部署上线或任何花钱的操作；
 4. 你发现我的需求之间有矛盾时，指出矛盾并等我裁决。
