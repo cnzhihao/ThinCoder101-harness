@@ -55,7 +55,7 @@ def extract_section(parent_agents: Path, heading: str) -> str:
     过滤机制说明行（含 META_LINE_KEY 的行）——它们描述的是主目录的初始化机制，
     复制进子项目守则会成为语义悬空的指令。
     """
-    text = parent_agents.read_text(encoding="utf-8")
+    text = read_text_safe(parent_agents)
     pattern = re.compile(rf"(?ms)^## {re.escape(heading)}\s*\n(.*?)(?=^## |\Z)")
     m = pattern.search(text)
     if not m:
@@ -118,6 +118,13 @@ README_TEMPLATE = """# {name}
 """
 
 
+def read_text_safe(path: Path) -> str:
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError as e:
+        fail(f"读取文件失败：{path}（{e}）")
+
+
 def main() -> None:
     global _cleanup_dir
     ap = argparse.ArgumentParser(description="ThinCoder101-harness 子项目初始化")
@@ -133,14 +140,14 @@ def main() -> None:
 
     parent = Path(args.parent).resolve()
     parent_agents = parent / "AGENTS.md"
-    if not parent_agents.exists() or PARENT_MARKER not in parent_agents.read_text(encoding="utf-8"):
+    if not parent_agents.exists() or PARENT_MARKER not in read_text_safe(parent_agents):
         fail(f"当前目录（{parent}）不是主工作目录：未找到含「{PARENT_MARKER}」的 AGENTS.md。"
              f"请回到主目录再执行本脚本——子项目必须建在主目录的 projects/ 下。")
 
     req_src = Path(args.requirements).resolve()
     if not req_src.is_file():
         fail(f"需求文档草稿不存在：{req_src}")
-    req_content = req_src.read_text(encoding="utf-8", errors="replace").strip()
+    req_content = read_text_safe(req_src).strip()
     if not req_content:
         fail(f"需求文档草稿是空的：{req_src}。先把访谈共识写进去（已拍板决策/功能点/不做清单/验收标准），再重跑。")
 

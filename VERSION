@@ -1,1 +1,1 @@
-snapshot 2026-10-03 / upstream mattpocock/skills@d81f3a1 / pack rev 9 (review fixes: rollback on failure, meta-line filter, empty-draft guard, decode tolerance, python fallback note, README sync)
+snapshot 2026-10-03 / upstream mattpocock/skills@d81f3a1 / pack rev 10 (round-2 advisor residue: read-side IO guard, AGENTS.md wording aligned)
