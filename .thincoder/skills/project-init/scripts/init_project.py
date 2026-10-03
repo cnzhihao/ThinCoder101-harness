@@ -120,7 +120,7 @@ README_TEMPLATE = """# {name}
 
 def read_text_safe(path: Path) -> str:
     try:
-        return path.read_text(encoding="utf-8")
+        return path.read_text(encoding="utf-8", errors="replace")
     except OSError as e:
         fail(f"读取文件失败：{path}（{e}）")
 

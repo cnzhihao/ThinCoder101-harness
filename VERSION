@@ -1,1 +1,1 @@
-snapshot 2026-10-03 / upstream mattpocock/skills@d81f3a1 / pack rev 10 (round-2 advisor residue: read-side IO guard, AGENTS.md wording aligned)
+snapshot 2026-10-03 / upstream mattpocock/skills@d81f3a1 / pack rev 11 (round-3: read_text_safe decode-tolerant, errors=replace)
