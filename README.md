@@ -2,41 +2,41 @@
 
 本仓库是专栏实战篇（第 6 篇）随堂技能包的**发布仓**，内含两个配合使用的 ThinCoder 技能：
 
-- **grill-me**：需求拷问入口。你呼叫它，AI 就切换成"严苛产品总监"，从宏观到细节连环追问你的需求。
-- **grilling**：真正的访谈方法（拷问引擎）。grill-me 调用它干活，两者必须同时在场——本包已一次装齐，你不用操心。
+- **grilling**：访谈引擎。AI 检测到你有新需求时，会先问一句"要不要开始需求访谈"，你同意后它就切换成"严苛产品总监"，一轮一轮把需求问透——**你不需要记任何命令**。
+- **grill-me**：备用快捷入口。默认情况下 AI 会主动提议访谈；如果你想跳过提议直接开拷，在对话里点名 grill-me 即可。
 
-技能来自 Matt Pocock 的开源项目（github.com/mattpocock/skills，MIT 许可证）。本包是**固定版本快照**：取自上游 commit d81f3a1（2026-10-03），内容未做任何修改。快照保证你学到的操作和教程永远一致；上游更新时，由专栏统一重新打包并通知，你不需要自己跟进。
+两个技能来自 Matt Pocock 的开源项目（github.com/mattpocock/skills，MIT 许可证）。本包是**固定版本快照**：取自上游 commit d81f3a1（2026-10-03），内容未做任何修改。快照保证你学到的操作和教程永远一致；上游更新时，由专栏统一重新打包并通知，你不需要自己跟进。
 
-## 安装（第 6 篇教程同步，三步）
+## 安装：一句话交给 Agent（第 6 篇教程同步）
 
-> 不用 git clone：直接下载 ZIP，包里没有 .git 文件夹，不会在你主目录里塞进多余的东西。
+> 不用 git clone、不用敲命令：直接下载 ZIP，把安装这件事交给 AI 自己办。
 
-1. 打开本仓库主页 → 绿色 Code 按钮 → **Download ZIP**；
-2. 解压，得到 thincoder-skills-main 文件夹；
-3. 打开终端，进入你的主工作目录（第 6 篇建的，例如 my-workspace），把包里的 .thincoder 文件夹复制进来：
+1. 打开本仓库主页 → 绿色 Code 按钮 → **Download ZIP**（ZIP 里没有 .git 文件夹，不会在你主目录里塞进多余的东西）；
+2. 在你的主工作目录（第 6 篇建的，例如 my-workspace）里启动 ThinCoder；
+3. 把下面这段话粘贴给 AI，剩下的它来办，你只在它请求权限时点批准：
 
-       cd my-workspace
-       cp -R ~/Downloads/thincoder-skills-main/.thincoder .
+```text
+请帮我安装技能包：把我下载文件夹里最新的 thincoder-skills-main ZIP 解压，
+把里面的 .thincoder 文件夹完整复制到当前目录。如果当前目录已有 .thincoder
+就合并进去，不要覆盖删除已有内容。完成后运行 /skills 验证 grill-me 和
+grilling 两个技能都已就位，向我报告结果。
+```
 
-   Windows 用户（PowerShell）：
-
-       cd my-workspace
-       Copy-Item -Recurse $env:USERPROFILE\Downloads\thincoder-skills-main\.thincoder .
-
-完成。在 my-workspace 里启动 ThinCoder，输入 /skills，能看到 grill-me 和 grilling 两个技能就装好了。
+装好后，配合第 6 篇的工作守则（AGENTS.md）使用效果最佳：守则里的「开工自检」会让 AI 每次启动时自己检查技能包在不在位；「新需求访谈」会让它在你提出新想法时主动问你要不要开访谈。
 
 ## 主目录安装后长这样
 
     my-workspace/            ← 你的总司令部（第 6 篇建立）
-      AGENTS.md              ← 第 6 篇会教你写
-      README.md              ← 同上
+      AGENTS.md              ← 员工守则（第 6 篇会教你写）
+      README.md              ← 工作台说明书
+      .gitignore             ← 内容一行：projects/
       .thincoder/            ← 本包复制进来的部分
         skills/
-          grill-me/SKILL.md  ← 需求拷问入口
-          grilling/SKILL.md  ← 拷问引擎
+          grill-me/SKILL.md  ← 备用快捷入口（用户点名才触发）
+          grilling/SKILL.md  ← 访谈引擎（AI 经守则主动提议使用）
 
 以后第 7 篇 grill-me 需求访谈、以及你孵化的每个子项目，都在这个主目录里进行。子项目（如 my-first-tool/）建在主目录里面，它们会有自己的 Git 仓库——和本技能包没有任何 Git 关系，互不干扰。
 
 ## 升级
 
-本包升级由专栏统一发布：出新版时重复上面的三步（覆盖复制 .thincoder 即可）。不要自行从上游仓库同步——教程与快照版本绑定。
+本包升级由专栏统一发布：出新版时重复上面的三步（下载新 ZIP，把安装提示词再发给 AI 一次即可）。不要自行从上游仓库同步——教程与快照版本绑定。
