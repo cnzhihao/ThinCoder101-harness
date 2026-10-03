@@ -1,41 +1,38 @@
-# thincoder-skills：《AI 编程应用开发专栏》实战篇技能包
+# ThinCoder101-harness：《AI 编程应用开发专栏》实战篇 Harness 底座
 
-本仓库是专栏实战篇（第 6 篇）随堂技能包的**发布仓**，内含两个配合使用的 ThinCoder 技能：
+这是专栏第 6 篇的随堂底座仓：**一个仓库装齐司令部的全部三件套**——AI 员工守则、工作台说明书、需求访谈技能包。读者不需要手抄任何模板，一条提示词让 AI 把整套 Harness 装进自己的工作目录。
 
-- **grilling**：访谈引擎。AI 检测到你有新需求时，会先问一句"要不要开始需求访谈"，你同意后它就切换成"严苛产品总监"，一轮一轮把需求问透——**你不需要记任何命令**。
-- **grill-me**：备用快捷入口。默认情况下 AI 会主动提议访谈；如果你想跳过提议直接开拷，在对话里点名 grill-me 即可。
+## 仓库结构
 
-两个技能来自 Matt Pocock 的开源项目（github.com/mattpocock/skills，MIT 许可证）。本包是**固定版本快照**：取自上游 commit d81f3a1（2026-10-03），内容未做任何修改。快照保证你学到的操作和教程永远一致；上游更新时，由专栏统一重新打包。
+    ThinCoder101-harness/
+    ├── AGENTS.md                       ← AI 员工守则（身份/目录规矩/开工自检/新需求访谈/Git 规矩/请示红线）
+    ├── README.md                       ← 工作台说明书（给人看：目录分工/工作动线/版本管理）
+    ├── .gitignore                      ← 内容一行：projects/（子项目区不归主仓库管，防仓库套仓库）
+    ├── VERSION                         ← 版本锚点：AI 靠它自动判断要不要升级
+    └── .thincoder/
+        └── skills/
+            ├── grilling/SKILL.md       ← 访谈引擎：AI 一轮一轮把需求问透（经守则主动提议使用）
+            └── grill-me/SKILL.md       ← 备用快捷入口：用户点名时直接开拷
 
-## 安装：一句话交给 Agent（仅需这一次手动）
+技能来自 Matt Pocock 的开源项目（github.com/mattpocock/skills，MIT 许可证），锁定在上游 commit d81f3a1（2026-10-03）——固定版本快照，教程与版本绑定；上游更新由专栏统一重新打包。
 
-在你的主工作目录（第 6 篇建的，例如 my-workspace）里启动 ThinCoder，把下面这段话粘贴给 AI，剩下的它来办，你只在它请求权限时点批准：
+## 安装：一条提示词（读者唯一要做的动作）
 
-```text
-请帮我安装技能包：从 https://github.com/cnzhihao/thincoder-skills 拉取最新版本
-（克隆或下载 ZIP 均可），把里面的 .thincoder/skills/ 下的技能装到当前目录的
-.thincoder/skills/ 里，并记录 VERSION 文件内容。如果当前目录已有 .thincoder
-就合并进去，不要覆盖删除已有内容。完成后运行 /skills 验证 grill-me 和
-grilling 两个技能都已就位，向我报告结果。
-```
+建好（或选中）自己的工作文件夹，在里面启动 ThinCoder，把下面这段话粘贴给 AI，权限弹窗点批准，十几秒装完：
 
-> 网络访问 GitHub 失败？告诉 AI「改用手动方式」，然后你在浏览器下载本仓 ZIP，再让 AI 从本地 ZIP 安装即可。
+    请把 https://github.com/cnzhihao/ThinCoder101-harness 这个仓库完整安装到当前目录，
+    作为我的工作司令部：① 把仓库里的 AGENTS.md、README.md、.gitignore 复制到当前
+    目录（已存在的文件先征求我的意见）；② 把 .thincoder/skills/ 下的技能合并进当前
+    目录的 .thincoder/skills/；③ 记住 VERSION 文件的内容作为当前版本记录；④ 装完后
+    执行 git init 和首次提交（提交信息：司令部建档）；⑤ 运行 /skills 确认 grill-me
+    和 grilling 两个技能已就位，然后向我汇报安装结果和开工自检情况。
 
-装好后，配合第 6 篇的工作守则（AGENTS.md）使用：守则里的「开工自检」从此接管一切——技能包在不在位、是不是最新版、Git 建没建档，AI 每次启动自己检查、自己补，你只管聊天。
+装完**重启 ThinCoder**（退出再输入 thincoder），新守则生效——之后的一切（环境自检、技能升级、需求访谈提议）都由 AGENTS.md 的守则自动驱动，你只管聊天。
 
-## 升级：全自动，你什么都不用做
+## 升级：全自动
 
-升级逻辑写在工作守则的「开工自检」里：AI 每次启动会对比本仓的 VERSION 文件和本地记录，发现有新版本就自动拉取更新，然后一句话告诉你「技能包已更新到 X 版」。**你永远不需要手动升级**——打开对话框聊天就行。
+升级逻辑写在守则的「开工自检」里：AI 每天首次启动对比本仓 VERSION 与本地记录，有新版就告知并经同意自动更新。你永远不需要手动升级。
 
-## 主目录安装后长这样
+## 子项目
 
-    my-workspace/            ← 你的总司令部（第 6 篇建立）
-      AGENTS.md              ← 员工守则（第 6 篇会教你写，含开工自检）
-      README.md              ← 工作台说明书
-      .gitignore             ← 内容一行：projects/
-      .thincoder/            ← 本包装进来的部分
-        skills/
-          grill-me/SKILL.md  ← 备用快捷入口（用户点名才触发）
-          grilling/SKILL.md  ← 访谈引擎（AI 经守则主动提议使用）
-
-以后第 7 篇需求访谈、以及你孵化的每个子项目，都在这个主目录里进行。子项目（如 my-first-tool/）建在主目录里面，它们会有自己的 Git 仓库——和本技能包没有任何 Git 关系，互不干扰。
+以后孵化的每个产品（如 projects/my-first-tool/）建在主目录里面，各自独立 git init——和本仓库没有任何 Git 嵌套关系（主仓库的 .gitignore 已把 projects/ 挡住）。
