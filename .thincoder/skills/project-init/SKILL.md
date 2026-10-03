@@ -15,6 +15,8 @@ description: 初始化一个新的产品子项目：跑确定性脚本完成建�
 
     python3 .thincoder/skills/project-init/scripts/init_project.py <项目名> --requirements <草稿路径>
 
+    （Windows 上 python3 不存在时，改用 python 或 py 跑同一条命令。）
+
 - 项目名用英文+中划线（如 number-guess-game），与用户确认一次；
 - 脚本会自动完成：建 projects/<名>/ 目录、落三件套（docs/requirements.md + README.md + 子项目 AGENTS.md）、从主守则复制「部署规范」节、附加官方部署技能资源、在子项目目录内 git init 并完成第 0 号存档、自检仓库根位置；
 - 脚本成功会打印完成报告（含下一步交接提示），失败会打印中文原因——把输出原样转述给用户。

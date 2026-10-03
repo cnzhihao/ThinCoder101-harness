@@ -1,1 +1,1 @@
-snapshot 2026-10-03 / upstream mattpocock/skills@d81f3a1 / pack rev 8 (project-init: deterministic python script init_project.py)
+snapshot 2026-10-03 / upstream mattpocock/skills@d81f3a1 / pack rev 9 (review fixes: rollback on failure, meta-line filter, empty-draft guard, decode tolerance, python fallback note, README sync)

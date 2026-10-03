@@ -5,7 +5,8 @@
   1. 把访谈共识写成需求文档草稿（任意临时位置）；
   2. 执行本脚本：python3 init_project.py <项目名> --requirements <草稿路径>
 其余全部由本脚本确定性完成：建目录、生成三件套、复制部署规范、git init 第 0 号存档。
-任何一步失败都会以非零码退出并打印中文错误说明，Agent 读输出向用户汇报即可。
+失败时以非零码退出：参数缺失打印用法说明；执行中的错误打印中文原因（git 阶段失败
+会自动清理本次创建的半成品目录，不留残骸）。
 """
 import argparse
 import re
@@ -16,15 +17,32 @@ from pathlib import Path
 
 COMMIT_MSG = "第 0 号存档：需求与守则就位"
 PARENT_MARKER = "主目录工作守则"  # 主目录 AGENTS.md 的标志串
+META_LINE_KEY = "初始化子项目时"  # 主守则中的机制说明行——不复制进子守则（子项目语境下语义悬空）
+
+# 失败回滚用：记录本次创建的项目目录，fail() 退出前清理
+_cleanup_dir: Path | None = None
 
 
-def fail(msg: str) -> "None":
-    print(f"[init-project 失败] {msg}")
+def fail(msg: str) -> None:
+    global _cleanup_dir
+    if _cleanup_dir is not None and _cleanup_dir.exists():
+        try:
+            shutil.rmtree(_cleanup_dir)
+            cleaned = f"\n（本次创建的 {_cleanup_dir} 已自动清理，修正问题后可直接重跑。）"
+        except OSError:
+            cleaned = f"\n（注意：本次创建的 {_cleanup_dir} 未能自动清理，请手动删除后重试。）"
+    else:
+        cleaned = ""
+    print(f"[init-project 失败] {msg}{cleaned}")
     sys.exit(1)
 
 
 def run_git(args: list, cwd: Path) -> str:
-    r = subprocess.run(["git"] + args, cwd=cwd, capture_output=True, text=True, encoding="utf-8")
+    try:
+        r = subprocess.run(["git"] + args, cwd=cwd, capture_output=True,
+                           text=True, encoding="utf-8", errors="replace")
+    except FileNotFoundError:
+        fail("找不到 git 命令。请确认第 5 篇的 Git 已安装并在 PATH 中，重开终端后再试。")
     if r.returncode != 0:
         fail(f"git {' '.join(args)} 执行失败：{r.stderr.strip() or r.stdout.strip()}\n"
              f"（若提示未设置 user.name/user.email，请先完成第 5 篇的 Git 报到配置）")
@@ -32,11 +50,18 @@ def run_git(args: list, cwd: Path) -> str:
 
 
 def extract_section(parent_agents: Path, heading: str) -> str:
-    """从主目录 AGENTS.md 中提取 `## <heading>` 小节（到下一个 `## ` 为止）。"""
+    """从主目录 AGENTS.md 中提取 `## <heading>` 小节（到下一个 `## ` 为止）。
+
+    过滤机制说明行（含 META_LINE_KEY 的行）——它们描述的是主目录的初始化机制，
+    复制进子项目守则会成为语义悬空的指令。
+    """
     text = parent_agents.read_text(encoding="utf-8")
     pattern = re.compile(rf"(?ms)^## {re.escape(heading)}\s*\n(.*?)(?=^## |\Z)")
     m = pattern.search(text)
-    return m.group(1).strip() if m else ""
+    if not m:
+        return ""
+    lines = [ln for ln in m.group(1).splitlines() if META_LINE_KEY not in ln]
+    return "\n".join(lines).strip()
 
 
 CHILD_AGENTS_TEMPLATE = """# {name} · 子项目守则
@@ -94,6 +119,7 @@ README_TEMPLATE = """# {name}
 
 
 def main() -> None:
+    global _cleanup_dir
     ap = argparse.ArgumentParser(description="ThinCoder101-harness 子项目初始化")
     ap.add_argument("name", help="产品名（英文优先，中划线连接，如 number-guess-game）")
     ap.add_argument("--requirements", required=True,
@@ -114,24 +140,30 @@ def main() -> None:
     req_src = Path(args.requirements).resolve()
     if not req_src.is_file():
         fail(f"需求文档草稿不存在：{req_src}")
+    req_content = req_src.read_text(encoding="utf-8", errors="replace").strip()
+    if not req_content:
+        fail(f"需求文档草稿是空的：{req_src}。先把访谈共识写进去（已拍板决策/功能点/不做清单/验收标准），再重跑。")
 
     proj = parent / "projects" / name
     if proj.exists():
         fail(f"projects/{name} 已存在。换个名字，或删除旧目录后重试。")
 
-    # ---- 结构 ----
-    (proj / "docs").mkdir(parents=True)
-    shutil.copyfile(req_src, proj / "docs" / "requirements.md")
-    (proj / "README.md").write_text(README_TEMPLATE.format(name=name), encoding="utf-8")
+    try:
+        (proj / "docs").mkdir(parents=True)
+        _cleanup_dir = proj  # 从这里起，任何失败都清理半成品
+        shutil.copyfile(req_src, proj / "docs" / "requirements.md")
+        (proj / "README.md").write_text(README_TEMPLATE.format(name=name), encoding="utf-8")
 
-    deploy_section = extract_section(parent_agents, "部署规范")
-    deploy_block = ("## 部署规范\n" + deploy_section + "\n") if deploy_section else \
-                   "## 部署规范\n（主目录守则暂无此节，跳过复制。）\n"
-    (proj / "AGENTS.md").write_text(
-        CHILD_AGENTS_TEMPLATE.format(name=name, deploy_section=deploy_block, skills_section=SKILLS_SECTION),
-        encoding="utf-8")
+        deploy_section = extract_section(parent_agents, "部署规范")
+        deploy_block = ("## 部署规范\n" + deploy_section + "\n") if deploy_section else \
+                       "## 部署规范\n（主目录守则暂无此节，跳过复制。）\n"
+        (proj / "AGENTS.md").write_text(
+            CHILD_AGENTS_TEMPLATE.format(name=name, deploy_section=deploy_block, skills_section=SKILLS_SECTION),
+            encoding="utf-8")
+    except OSError as e:
+        fail(f"文件操作失败：{e}")
 
-    # ---- Git 第 0 号存档（在子项目目录内）----
+    # ---- Git 第 0 号存档（在子项目目录内；失败由 fail() 自动清理半成品）----
     run_git(["init"], cwd=proj)
     run_git(["add", "-A"], cwd=proj)
     run_git(["commit", "-m", COMMIT_MSG], cwd=proj)
@@ -141,6 +173,7 @@ def main() -> None:
     if toplevel != proj:
         fail(f"自检失败：仓库根是 {toplevel}，不是子项目目录 {proj}。请检查并删除误建的 .git。")
 
+    _cleanup_dir = None  # 全部成功，解除回滚标记
     commit = run_git(["log", "--oneline", "-1"], cwd=proj)
     print("[init-project 完成]")
     print(f"  项目目录：projects/{name}")

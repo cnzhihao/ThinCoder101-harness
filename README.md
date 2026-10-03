@@ -12,10 +12,10 @@
     └── .thincoder/
         └── skills/
             ├── grilling/SKILL.md       ← 访谈引擎：AI 一轮一轮把需求问透（经守则主动提议使用）
-            ├── project-init/SKILL.md   ← 子项目初始化：建目录、生成三件套、复制部署规范、Git 第 0 号存档
+            ├── project-init/           ← 子项目初始化：跑 init_project.py 脚本，确定性完成三件套 + Git 第 0 号存档
             └── grill-me/SKILL.md       ← 备用快捷入口：用户点名时直接开拷
 
-技能部分来自 Matt Pocock 的开源项目（github.com/mattpocock/skills，MIT 许可证），锁定在上游 commit d81f3a1（2026-10-03）——固定版本快照，教程与版本绑定；上游更新由专栏统一重新打包。守则内置「部署规范」（EdgeOne Pages 一键部署）与官方 EdgeOne Makers 技能清单，初始化子项目时自动复制进子项目守则。
+访谈两技能（grilling / grill-me）来自 Matt Pocock 的开源项目（github.com/mattpocock/skills，MIT 许可证），锁定在上游 commit d81f3a1（2026-10-03）——固定版本快照，教程与版本绑定；上游更新由专栏统一重新打包。project-init 为本专栏自研技能（内含确定性初始化脚本 init_project.py）。守则内置「部署规范」（EdgeOne Pages 一键部署）与官方 EdgeOne Makers 技能清单，初始化子项目时自动复制进子项目守则。
 
 ## 安装：一条提示词（读者唯一要做的动作）
 
