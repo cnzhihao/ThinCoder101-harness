@@ -1,5 +1,7 @@
 # ThinCoder101-harness：《AI 编程应用开发专栏》实战篇 Harness 底座
 
+> 📖 **配套免费公开课**：[ThinCoder101 — 14 节课，从想法到可验证交付](https://thincoder101.com/start)（[中文版](https://thincoder101.com/zh/start)）
+
 这是专栏第 6 篇的随堂底座仓：**一个仓库装齐司令部的全部家当**——AI 员工守则、工作台说明书、三个技能（需求访谈 + 子项目初始化）。读者不需要手抄任何模板，一条提示词让 AI 把整套 Harness 装进自己的工作目录。
 
 ## 仓库结构
